@@ -67,7 +67,7 @@ p {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  transition: box-shadow 0.2s linear;
+  transition: box-shadow 0.09s linear;
 }
 
 button {
