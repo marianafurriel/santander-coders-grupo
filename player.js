@@ -1,6 +1,6 @@
     // Array para armazenar as entradas do jogador
     const sequenciaJogador = [];
-
+    let contador = 0
     // Função para exibir a sequência gerada pelo jogo
     async function exibirSequenciaJogador() {
       for (const color of sequence) {
@@ -38,6 +38,9 @@
         if (sequenciaJogador[i] !== sequence[i]) {
           alert('Sequência incorreta! Fim do jogo.');
           return;
+        }else{
+          contador++
+          alert(`Você acertou ${contador} vezes seguidas a sequência`)
         }
       }
     }
