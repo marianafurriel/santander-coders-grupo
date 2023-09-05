@@ -33,16 +33,24 @@
     <p>Maior sequencia de acertos: <span id="maiorAcerto">X</span></p>
     <p>Você está em uma sequencia de <span id="seqAcerto">X</span> acertos</p>
   </section>
+  <div id="fade" class="hide"></div>
+    <div id="modal" class="hide">
+      <div class="modal-body">
+        <p>Bora jogar?</p>
+        <button id="modalOkButton">Ok</button>
+        <button id="modalCancelButton">Cancelar</button>
+      </div>
+    </div>
   <section>
     <div class="tabuleiro">
-      <div class="botao vermelho"></div>
-      <div class="botao azul"></div>
-      <div class="botao verde"></div>
-      <div class="botao amarelo"></div>
+      <div id="botaoVermelho" class="botao vermelho"></div>
+      <div id="botaoAzul" class="botao azul"></div>
+      <div id="botaoVerde" class="botao verde"></div>
+      <div id="botaoAmarelo" class="botao amarelo"></div>
     </div>
   </section>
-  <button id="btnovoJogo" onclick="sequenciaAleatoria()">Novo jogo</button>
-  <script src="main.js"></script>
+  <button id="btnovoJogo" onclick="toggleModal()">Novo jogo</button>
+  <script src="./script.js"></script>
 </body>
 
 </html>

@@ -7,6 +7,7 @@ const btnNovoJogo = document.getElementById("#btnovoJogo");
 
 let sequencia = [];
 let sequenciaClicada = [];
+let score = 0;
 
 let numeroCor = (cor) => {
     if (cor == 1) {
@@ -22,7 +23,7 @@ let numeroCor = (cor) => {
         console.log(cor, btnVerde)
         return btnVerde;
     }
-}
+};
 
 let sequenciaAleatoria = () => {
     let sequenciaCor = Math.floor(Math.random() * 4);
@@ -31,22 +32,49 @@ let sequenciaAleatoria = () => {
     for (let item in sequencia) {
       let elementColor = numeroCor(sequencia[item]);
       highlightColor(elementColor, Number(item) + 1);
-    }
-  };
+    }  
+};
 
 function highlightColor(elemento, cor) {
-    //alterar para o nome do atributo no html
-const button = document.getElementsByClassName(`."${cor}"]`);
-elemento.classList.add('highlighted');
-setTimeout(() => {
-    elemento.classList.remove('highlighted');
-    }, 500);
-}
+    const button = document.getElementsByClassName(`."${cor}"]`);
+    elemento.classList.add('highlighted');
+    setTimeout(() => {
+        elemento.classList.remove('highlighted');
+        }, 500);
+};
 
-// btnVerde.onclick = () => click(1);
-// btnVermelho.onclick = () => click(2);
-// btnAzul.onclick = () => click(3);
-// btnAmarelo.onclick = () => click(4);
+let proximaSequencia = () => {
+    score++;
+    sequenciaAleatoria();
+};
+
+let click = cor => {
+    sequenciaClicada[sequenciaClicada.length] = cor;
+    numeroCor(cor).classList.add('highlighted');
+  
+    setTimeout(() => {
+        numeroCor(cor).classList.remove('highlighted');
+        checkSequencia();
+    }, 250);
+  };
+
+btnVerde.onclick = () => click(1);
+btnVermelho.onclick = () => click(2);
+btnAzul.onclick = () => click(3);
+btnAmarelo.onclick = () => click(4);
+
+let checkSequencia = () => {
+    for (let i in sequenciaClicada) {
+      if (sequenciaClicada[i] != sequencia[i]) {
+        //gameOver();
+        break;
+      }
+    }
+    if (sequenciaClicada.length == sequencia.length) {
+        seqAcerto.innerHTML = score;
+        proximaSequencia();
+    }
+  };
 
 botoes.forEach((botao) =>
   botao.addEventListener("mouseenter", () => {
@@ -78,5 +106,4 @@ botoes.forEach((botao) =>
     }, 100);
   })
 );
-
 
