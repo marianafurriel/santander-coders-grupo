@@ -14,6 +14,7 @@ const modalSimButton = document.querySelector("#modalSimButton");
 const modalNaoButton = document.querySelector("#modalNaoButton");
 const mypopup = document.querySelector("#my-popup");
 const botoesColoridos = document.querySelector("#botoesColoridos");
+const maiorAcerto = document.querySelector("#maiorAcerto");
 
 let sequenciaCor =[];
 let sequenciaClick =[];
@@ -61,6 +62,7 @@ let botaoCor = (numeroCor) => {
         if (numeroCor == 1) {
             let audio = document.getElementById("clip1");
             audio.play();
+            console.log("clique vermelho");
             return btnVermelho;
         } else if (numeroCor == 2) {
             let audio = document.getElementById("clip2");
@@ -94,6 +96,7 @@ async function contaClick(cliques) {
         await new Promise(resolve => setTimeout(resolve, intervalo));
     }
     else {
+        desabilitarBotoes();
         checkSequencia();
     }
 }
@@ -104,9 +107,19 @@ btnAzul.onclick = () => click(2);
 btnAmarelo.onclick = () => click(3);
 btnVerde.onclick = () => click(4);
 
+//Funcao para desabilitar clique nos botões
+function desabilitarBotoes() {
+    botoesColoridos.style.pointerEvents = "none";
+}
+//Funcao para habilitar clique nos botões
+function habilitarBotoes() {
+    botoesColoridos.style.pointerEvents = "auto";
+}
+
 
 //Gerar um número aleatório de 1 a  que corresconde as cores
-function gerarNumeroCor() {
+async function gerarNumeroCor() {
+    desabilitarBotoes();
     let numeroCor = Math.floor(Math.random() * 4 + 1);
     sequenciaCor.push(numeroCor);
 
@@ -117,8 +130,9 @@ async function highlightElement() {
     for (item of sequenciaCor) {
         let elemento = botaoCor(item); 
         highlightColor(elemento);       
-        await new Promise(resolve => setTimeout(resolve, 1500));      
+        await new Promise(resolve => setTimeout(resolve, 1200));      
     }
+    habilitarBotoes();
 }
 
 // faz o efeito de iluminar o botão quando estiver na sua vez da sequencia
@@ -127,7 +141,6 @@ function highlightColor(elemento) {
     setTimeout(() => {
         elemento.classList.remove('highlighted');
     }, 500);
-    console.log(elemento);
 };
 
 //Começa o jogo
@@ -157,7 +170,6 @@ function checkSequencia() {
         } 
         else {
             gameOver();
-            break;
         }
     } 
     proximaSequencia();       
