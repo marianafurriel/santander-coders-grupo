@@ -63,7 +63,6 @@ let botaoCor = (numeroCor) => {
         if (numeroCor == 1) {
             let audio = document.getElementById("clip1");
             audio.play();
-            console.log("clique vermelho");
             return btnVermelho;
         } else if (numeroCor == 2) {
             let audio = document.getElementById("clip2");
@@ -149,6 +148,7 @@ function playGame() {
     sequenciaCor =[];
     sequenciaClick =[];
     score = 0;
+    desabilitarBotoes();
     gerarNumeroCor();
 };
 
@@ -171,6 +171,7 @@ function checkSequencia() {
         } 
         else {
             gameOver();
+            return;
         }
     } 
     proximaSequencia();       
@@ -207,6 +208,7 @@ function gameOver() {
     toggleModalReset();
     document.querySelector('#maiorAcerto').textContent = maiorPontuacao;
     document.querySelector('#seqAcerto').textContent = score;
+    return;
 }
 
 // Efeitos dos botões
