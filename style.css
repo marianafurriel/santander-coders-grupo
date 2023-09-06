@@ -12,12 +12,13 @@
   --verde: rgb(82,255,0);
   --amarelo: rgb(250,255,0);
   --branco: rgb(231,231,231);
+  --backgroundColor: rgb(0, 0, 0);
 }
 
 body {
   height: 100vh;
   padding: 1.5rem 0rem 5rem;
-  background-color: #000;
+  background-color: var(--backgroundColor);
   color: var(--branco);
   font-size: 62.5%;
   font-family: Roboto;
@@ -108,7 +109,7 @@ button:hover {
   background-color: var(--azul);
 }
 
-#fade {
+#fade, #fade2 {
   position: fixed;
   top: 0;
   left: 0;
@@ -118,7 +119,7 @@ button:hover {
   z-index: 5;
 }
 
-#modal {
+#modal, #modal2 {
   position: fixed;
   left: 50%;
   top: 50%;
@@ -131,20 +132,19 @@ button:hover {
   z-index: 10;
 }
 
-#fade,
-#modal {
+#fade, #modal, #fade2, #modal2 {
   transition: 0.5s;
   opacity: 1;
   pointer-events: all;
 }
 
-.modal-body p {
+.modal-body p, .modal-body2 p {
   margin-bottom: 1rem;
   font-size: 3rem;
   color: var(--azul);
 }
 
-#modalOkButton {
+#modalOkButton, #modalSimButton {
   margin-right: 1rem;
   background-color: var(--verde);
   color: #000000;
@@ -152,19 +152,35 @@ button:hover {
   border: 2px solid #000000;
 }
 
-#modalCancelButton {
+#modalCancelButton, #modalNaoButton {
   background-color: var(--vermelho);
   color: #000000;
   font-weight: 700;
   border: 2px solid #000000;
 }
 
-#modal.hide,
-#fade.hide {
+#modal.hide, #fade.hide, #modal2.hide, #fade2.hide {
   opacity: 0;
   pointer-events: none;
 }
 
-#modal.hide {
+#modal.hide, #modal2.hide {
   top: 0;
+}
+
+#my-popup {
+  background-color: var(--backgroundColor);
+  width: 10rem;
+  border-radius: 50%;
+  padding: 4rem;
+  font-size: 10rem;
+}
+
+
+#my-popup.hide {
+  display: none;
+}
+
+#botoesColoridos.hide {
+  display: none;
 }
