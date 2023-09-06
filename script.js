@@ -12,6 +12,7 @@ const modalCancelButton = document.querySelector("#modalCancelButton");
 let sequenciaCor =[];
 let sequenciaClick =[];
 let score = 0;
+let cliques = 0;
 
 // Abrir e fechar modal do começo do jogo
 const toggleModal = () => {
@@ -32,22 +33,18 @@ let botaoCor = (numeroCor) => {
     if (numeroCor == 1) {
         let audio = document.getElementById("clip1");
         audio.play();
-        console.log("botaoCor", btnVermelho)
         return btnVermelho;
     } else if (numeroCor == 2) {
         let audio = document.getElementById("clip2");
         audio.play();
-        console.log("botaoCor", btnAzul)
         return btnAzul;
     } else if (numeroCor == 3) {
         let audio = document.getElementById("clip3");
         audio.play();
-        console.log("botaoCor", btnAmarelo)
         return btnAmarelo;
     } else if (numeroCor == 4) {
         let audio = document.getElementById("clip4");
         audio.play();
-        console.log("botaoCor", btnVerde)
         return btnVerde;
     }
 };
@@ -55,14 +52,23 @@ let botaoCor = (numeroCor) => {
 
 let click = cor => {
     sequenciaClick[sequenciaClick.length] = cor;
-    botaoCor(cor).classList.add('selected');
+    botaoCor(cor).classList.add('highlighted');
   
     setTimeout(() => {
-        botaoCor(cor).classList.remove('selected');
-      checkClick();
+        botaoCor(cor).classList.remove('highlighted');
     }, 250);
+    cliques += 1;
+    contaClick(cliques);
   };
 
+async function contaClick(cliques) {
+    if (cliques !== sequenciaCor.length) {
+        await new Promise(resolve => setTimeout(resolve, 5000));
+    }
+    else {
+        checkSequencia();
+    }
+}
   
 //eventos de clique para as cores
 btnVermelho.onclick = () => click(1);
@@ -93,6 +99,7 @@ function highlightColor(elemento) {
     setTimeout(() => {
         elemento.classList.remove('highlighted');
     }, 500);
+    console.log(elemento);
 };
 
 //Começa o jogo
@@ -101,31 +108,19 @@ function playGame() {
     sequenciaClick =[];
     score = 0;
     gerarNumeroCor();
-    highlightElement();
 };
 
 // Colocar mais um número na sequencia de cores
-let proximaSequencia = () => {
-    console.log("proxima sequencia");
-    sequenciaClick.shift();
+let proximaSequencia = async () => {
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    sequenciaClick = []
     score++;
     gerarNumeroCor();
-    highlightElement();
 };
-
-// Espera 5 segundos pra ver se a pessoa clicou em todas as cores e checar os tamanhos das sequencias
-async function checkClick () {
-    await new Promise(resolve => setTimeout(resolve, 5000)); 
-    if (sequenciaCor.length === sequenciaClick.length) {
-        checkSequencia();
-    }
-    else {
-        setTimeout(gameOver, 5000);
-    }
-}
 
 // Checar se a sequencia do computador e do jogador estão iguais
 function checkSequencia() {
+    cliques = 0;
     console.log("checkSequencia", sequenciaCor);
     console.log("checkSequencia", sequenciaClick);
 
@@ -137,7 +132,7 @@ function checkSequencia() {
             gameOver();
         }
     } 
-        proximaSequencia();      
+    proximaSequencia();      
 }
 
 function gameOver() {
