@@ -19,6 +19,7 @@ const maiorAcerto = document.querySelector("#maiorAcerto");
 let sequenciaCor =[];
 let sequenciaClick =[];
 let score = 0;
+let maiorPontuacao = 0;
 let cliques = 0;
 let intervalo = 5000;
 const cores = ["rgb(255, 0, 0)", "rgb(0,10,255)", "rgb(82,255,0)", "rgb(250,255,0)"];
@@ -196,11 +197,15 @@ async function countDown() {
 }
 
 function gameOver() {
+    if (maiorPontuacao < score) {
+        maiorPontuacao = score;
+    }   
     sequenciaCor =[];
     sequenciaClick =[];
     score = 0;
     cliques = 0;
     toggleModalReset();
+    document.querySelector('#maiorAcerto').textContent = maiorPontuacao;
     document.querySelector('#seqAcerto').textContent = score;
 }
 
