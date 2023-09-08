@@ -96,7 +96,6 @@ let click = (cor) => {
 
   cliques += 1;
   checarCor(cor);
-  console.log("cliques: ", cliques);
 };
 
 function checarCor(cor) {
@@ -236,3 +235,6 @@ botoes.forEach((botao) =>
     }, 100);
   })
 );
+
+// const botaoToggleModal = document.querySelector("#btnNovoJogo")
+// botaoToggleModal.addEventListener('click',toggleModal)
