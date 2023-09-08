@@ -30,7 +30,7 @@
     <h1>Genius</h1>
   </header>
   <section>
-    <p>Maior sequencia de acertos: <span id="maiorAcerto" style="color: blue;">0</span></p>
+    <p>Maior sequencia de acertos: <span id="maiorAcerto" style="color: yellow;">0</span></p>
     <p>Você está em uma sequencia de <span id="seqAcerto" style="color: red;">0</span> acertos</p>
   </section>
   <div id="fade" class="hide"></div>
@@ -44,7 +44,7 @@
     <div id="fade2" class="hide"></div>
     <div id="modal2" class="hide">
       <div class="modal-body2">
-        <p>VOCÊ PERDEU!!!</p>
+        <p>Você acertou <span id="seqAcertoFim" style="color: red;"></span></p>
         <p>Deseja jogar novamente?</p>
         <button id="modalSimButton">Sim</button>
         <button id="modalNaoButton">Não</button>
@@ -64,5 +64,4 @@
   <button id="btnovoJogo" onclick="toggleModal()">Novo jogo</button>
   <script src="./script.js"></script>
 </body>
-
 </html>

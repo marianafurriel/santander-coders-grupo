@@ -141,7 +141,7 @@ button:hover {
 .modal-body p, .modal-body2 p {
   margin-bottom: 1rem;
   font-size: 3rem;
-  color: var(--azul);
+  color: #000000;
 }
 
 #modalOkButton, #modalSimButton {

@@ -85,6 +85,7 @@ let botaoCor = (numeroCor) => {
   }
 };
 
+// ilumina o botão clicado e chega se foi o botao correto
 let click = (cor) => {
   sequenciaClick[sequenciaClick.length] = cor;
   botaoCor(cor).classList.add("highlighted");
@@ -92,6 +93,7 @@ let click = (cor) => {
   setTimeout(() => {
     botaoCor(cor).classList.remove("highlighted");
   }, 250);
+
   cliques += 1;
   checarCor(cor);
   console.log("cliques: ", cliques);
@@ -101,6 +103,7 @@ function checarCor(cor) {
   if (sequenciaCor[posicao] !== cor) {
     gameOver();
   } else if (cliques === sequenciaCor.length) {
+    document.querySelector("#seqAcerto").textContent = score + 1;
     proximaSequencia();
   } else {
     posicao++;
@@ -167,21 +170,6 @@ let proximaSequencia = async () => {
   gerarNumeroCor();
 };
 
-// Checar se a sequencia do computador e do jogador estão iguais
-function checkSequencia() {
-  //   cliques = 0;
-
-  for (let i = 0; i < sequenciaCor.length; i++) {
-    if (sequenciaCor[i] == sequenciaClick[i]) {
-      document.querySelector("#seqAcerto").textContent = score + 1;
-    } else {
-      gameOver();
-      return;
-    }
-  }
-  proximaSequencia();
-}
-
 //Contagem regressiva
 async function countDown() {
   toggleModalCountdown();
@@ -203,17 +191,18 @@ async function countDown() {
 }
 
 function gameOver() {
-  if (maiorPontuacao < score) {
-    maiorPontuacao = score;
-  }
-  sequenciaCor = [];
-  sequenciaClick = [];
-  score = 0;
-  cliques = 0;
-  toggleModalReset();
-  document.querySelector("#maiorAcerto").textContent = maiorPontuacao;
-  document.querySelector("#seqAcerto").textContent = score;
-  return;
+    document.querySelector("#seqAcertoFim").textContent = score;
+    if (maiorPontuacao < score) {
+        maiorPontuacao = score;
+    }
+    sequenciaCor = [];
+    sequenciaClick = [];
+    score = 0;
+    cliques = 0;
+    toggleModalReset();
+    document.querySelector("#maiorAcerto").textContent = maiorPontuacao;
+    document.querySelector("#seqAcerto").textContent = score;
+    return;
 }
 
 // Efeitos dos botões
