@@ -44,22 +44,48 @@ p {
 .vermelho {
   grid-area: 1 / 1 / 2 / 2;
   background-color: rgb(255, 0, 0);
-  /* box-shadow: 0px 0px 60px 4px #ff0000; */
 }
+.vermelho:hover {
+  box-shadow: 0px 0px 10px 4px #ff0000;
+}
+.vermelho:active {
+  box-shadow: 0px 0px 60px 4px #ff0000;
+}
+
 .azul {
   grid-area: 1 / 2 / 2 / 3;
   background-color: #000aff;
   /* box-shadow: 0px 0px 60px 4px #000aff; */
 }
+.azul:hover {
+  box-shadow: 0px 0px 10px 4px #000aff;
+}
+.azul:active {
+  box-shadow: 0px 0px 60px 4px #000aff;
+}
+
 .verde {
   grid-area: 2 / 1 / 3 / 2;
   background-color: #52ff00;
   /* box-shadow: 0px 0px 60px 4px #52ff00; */
 }
+.verde:hover {
+  box-shadow: 0px 0px 10px 4px #52ff00;
+}
+.verde:active {
+  box-shadow: 0px 0px 60px 4px #52ff00;
+}
+
 .amarelo {
   grid-area: 2 / 2 / 3 / 3;
   background-color: #faff00;
   /* box-shadow: 0px 0px 60px 4px #faff00; */
+}
+.amarelo:hover {
+  box-shadow: 0px 0px 10px 4px #faff00;
+}
+.amarelo:active {
+  box-shadow: 0px 0px 60px 4px #faff00;
 }
 
 .botao {
