@@ -89,8 +89,8 @@ class SimonGame {
           pontuacao.textContent = this.round - 1;
         } else {
           const maiorPontuacao = document.querySelector("#maiorAcerto");
-          console.log(maiorPontuacao);
           if (this.round - 1 > Number(maiorPontuacao.textContent)) {
+            localStorage.setItem("maiorPontuacao", this.round - 1);
             maiorPontuacao.textContent = this.round - 1;
           }
           alert(`Game Over! Your score: ${this.round - 1}`);
@@ -101,4 +101,7 @@ class SimonGame {
   }
 }
 
+const maiorPontuacaoLocal = localStorage.getItem("maiorPontuacao") || 0;
+const maiorPontuacaoSpan = document.querySelector("#maiorAcerto");
+maiorPontuacaoSpan.textContent = maiorPontuacaoLocal;
 const game = new SimonGame();
