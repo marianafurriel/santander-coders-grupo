@@ -17,14 +17,15 @@ class Sequence {
     this.sequence = [];
   }
 
+  //adiciona uma cor aleatória a sequencia
   addToSequence() {
     const colors = ["red", "green", "blue", "yellow"];
     const randomColor = colors[Math.floor(Math.random() * 4)];
     this.sequence.push(randomColor);
   }
 
+  //toca a sequencia com 1 segundo de espera entre cada cor
   playSequence() {
-    console.log("play sequence");
     let i = 0;
     const interval = setInterval(() => {
       const button = new Button(this.sequence[i]);
@@ -39,20 +40,23 @@ class Sequence {
 
 class SimonGame {
   constructor() {
-    console.log("começa partida");
     this.sequence = new Sequence();
     this.playerSequence = [];
     this.round = 1;
-    this.isPlaying = false;
+    this.isPlaying = false; //esse atributo vai ser usado para impedir que comece um jogo quando já tiver um acontecendo
 
+    //adiciona evento de clique para o botão de novo jogo
     document
       .getElementById("start-btn")
       .addEventListener("click", () => this.startGame());
+
+    //adiciona evento de clique para cada botão
     document.querySelectorAll(".simon-button").forEach((button) => {
       button.addEventListener("click", () => this.handleButtonClick(button.id));
     });
   }
 
+  //inicia a partida
   startGame() {
     if (!this.isPlaying) {
       this.isPlaying = true;
@@ -62,6 +66,7 @@ class SimonGame {
     }
   }
 
+  //metodo que vai ser chamado para iniciar cada rodada
   playRound() {
     this.sequence.addToSequence();
     setTimeout(() => {
@@ -72,27 +77,33 @@ class SimonGame {
 
   handleButtonClick(color) {
     if (this.isPlaying) {
+      //essa função só faz algo se tiver algum jogo rolando
       const button = new Button(color);
       button.flash();
       this.playerSequence.push(color);
 
       if (this.playerSequence.length === this.sequence.sequence.length) {
+        //compara a sequencia de cliques do usuario com a sequencia de cores da rodada
         if (
           JSON.stringify(this.playerSequence) ===
           JSON.stringify(this.sequence.sequence)
         ) {
+          //atualiza no DOM a pontuação atual
+          const pontuacao = document.querySelector("#seqAcerto");
+          pontuacao.textContent = this.round;
           this.round++;
+          //espera 1 segundo e começa a proxima rodada
           setTimeout(() => {
             this.playRound();
           }, 1000);
-          const pontuacao = document.querySelector("#seqAcerto");
-          pontuacao.textContent = this.round - 1;
         } else {
+          //ao terminar a partida checa se a pontuação atual é recorde, se for, adiciona no local storage e atualiza no DOM
           const maiorPontuacao = document.querySelector("#maiorAcerto");
           if (this.round - 1 > Number(maiorPontuacao.textContent)) {
             localStorage.setItem("maiorPontuacao", this.round - 1);
             maiorPontuacao.textContent = this.round - 1;
           }
+          // encerra a partida e exibe um alerta para avisar o jogador
           alert(`Game Over! Your score: ${this.round - 1}`);
           this.isPlaying = false;
         }
@@ -101,7 +112,10 @@ class SimonGame {
   }
 }
 
+//atualiza o record ao iniciar a página, se for a primeira vez, seta como 0
 const maiorPontuacaoLocal = localStorage.getItem("maiorPontuacao") || 0;
 const maiorPontuacaoSpan = document.querySelector("#maiorAcerto");
 maiorPontuacaoSpan.textContent = maiorPontuacaoLocal;
+
+//inicia o jogo
 const game = new SimonGame();
