@@ -1,89 +1,104 @@
-class DomController {
-  static botoes = [...document.querySelectorAll(".botao")];
-  static init() {
-    console.log(DomController.botoes);
-    const novoJogo = document.querySelector(".btnNovoJogo");
-    novoJogo.addEventListener("click", () => {
-      Partida.novaPartida();
-      Partida.clique = 0;
-    });
-
-    DomController.botoes[0].addEventListener("click", () => {
-      Partida.avaliarClique(0);
-      Partida.clique++;
-      Partida.controle = true;
-    });
-    DomController.botoes[1].addEventListener("click", () => {
-      Partida.avaliarClique(1);
-      Partida.clique++;
-      Partida.controle = true;
-    });
-    DomController.botoes[2].addEventListener("click", () => {
-      Partida.avaliarClique(2);
-      Partida.clique++;
-      Partida.controle = true;
-    });
-    DomController.botoes[3].addEventListener("click", () => {
-      Partida.avaliarClique(3);
-      Partida.clique++;
-      Partida.controle = true;
-    });
+class Button {
+  constructor(color) {
+    this.color = color;
+    this.element = document.getElementById(color);
   }
-  static acendeBotao(id) {
-    const cor = getComputedStyle(DomController.botoes[id]).backgroundColor;
-    DomController.botoes[id].style.boxShadow = `0px 0px 60px 1px ${cor}`;
-    setTimeout(function () {
-      DomController.botoes[id].style.boxShadow = "";
-    }, 100);
+  //adicionar a classe de acender o botão
+  flash() {
+    this.element.classList.add(`${this.color}-lit`);
+    setTimeout(() => {
+      this.element.classList.remove(`${this.color}-lit`);
+    }, 500);
   }
 }
 
-class Partida {
-  static controle;
-  static partida;
-  static clique;
-  #sequencia;
-  #pontuacao;
+class Sequence {
   constructor() {
-    Partida.controle = false;
-    const seq = [];
-    for (let i = 0; i < 15; i++) {
-      seq.push(Math.floor(Math.random() * 4));
-    }
-    this.#sequencia = seq;
-    this.#pontuacao = 0;
-    console.log(seq);
+    this.sequence = [];
   }
 
-  get sequencia() {
-    return this.#sequencia;
-  }
-  set pontuacao(pontuacao) {
-    this.#pontuacao = pontuacao;
-  }
-  static novaPartida() {
-    Partida.partida = new Partida();
-    Partida.loopPartida();
-  }
-  static loopPartida() {
-    //loop da partida vai aqui
+  addToSequence() {
+    const colors = ["red", "green", "blue", "yellow"];
+    const randomColor = colors[Math.floor(Math.random() * 4)];
+    this.sequence.push(randomColor);
   }
 
-  static avaliarClique(id) {
-    if (!(id === Partida.partida.sequencia[Partida.clique])) {
-      Partida.gameOver();
-    }
-  }
-  static gameOver() {
-    alert("Você perdeu!");
-    location.reload();
+  playSequence() {
+    console.log("play sequence");
+    let i = 0;
+    const interval = setInterval(() => {
+      const button = new Button(this.sequence[i]);
+      button.flash();
+      i++;
+      if (i >= this.sequence.length) {
+        clearInterval(interval);
+      }
+    }, 1000);
   }
 }
 
-// let partida;
-DomController.init();
-console.log("teste1");
-setTimeout(() => {
-  console.log("teste timeout");
-}, 10000);
-console.log("teste2");
+class SimonGame {
+  constructor() {
+    console.log("começa partida");
+    this.sequence = new Sequence();
+    this.playerSequence = [];
+    this.round = 1;
+    this.isPlaying = false;
+
+    document
+      .getElementById("start-btn")
+      .addEventListener("click", () => this.startGame());
+    document.querySelectorAll(".simon-button").forEach((button) => {
+      button.addEventListener("click", () => this.handleButtonClick(button.id));
+    });
+  }
+
+  startGame() {
+    if (!this.isPlaying) {
+      this.isPlaying = true;
+      this.round = 1;
+      this.sequence = new Sequence();
+      this.playRound();
+    }
+  }
+
+  playRound() {
+    this.sequence.addToSequence();
+    setTimeout(() => {
+      this.sequence.playSequence();
+      this.playerSequence = [];
+    }, 1000);
+  }
+
+  handleButtonClick(color) {
+    if (this.isPlaying) {
+      const button = new Button(color);
+      button.flash();
+      this.playerSequence.push(color);
+
+      if (this.playerSequence.length === this.sequence.sequence.length) {
+        if (
+          JSON.stringify(this.playerSequence) ===
+          JSON.stringify(this.sequence.sequence)
+        ) {
+          this.round++;
+          setTimeout(() => {
+            this.playRound();
+          }, 1000);
+          const pontuacao = document.querySelector("#seqAcerto");
+          pontuacao.textContent = this.round - 1;
+        } else {
+          const maiorPontuacao = document.querySelector("#maiorAcerto");
+          console.log(maiorPontuacao);
+          if (this.round - 1 > Number(maiorPontuacao.textContent)) {
+            maiorPontuacao.textContent = this.round - 1;
+          }
+          alert(`Game Over! Your score: ${this.round - 1}`);
+          this.isPlaying = false;
+        }
+      }
+    }
+  }
+}
+
+const game = new SimonGame();

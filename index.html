@@ -14,18 +14,18 @@
     <h1>Genius</h1>
   </header>
   <section>
-    <p>Maior sequencia de acertos: <span id="maiorAcerto">X</span></p>
-    <p>Você está em uma sequencia de <span id="seqAcerto">X</span> acertos</p>
+    <p>Maior sequencia de acertos: <span id="maiorAcerto">0</span></p>
+    <p>Você está em uma sequencia de <span id="seqAcerto">0</span> acertos</p>
   </section>
   <section>
     <div class="tabuleiro">
-      <div class="botao vermelho"></div>
-      <div class="botao azul"></div>
-      <div class="botao verde"></div>
-      <div class="botao amarelo"></div>
+      <div id="red" class="simon-button"></div>
+      <div id="blue" class="simon-button"></div>
+      <div id="green" class="simon-button"></div>
+      <div id="yellow" class="simon-button"></div>
     </div>
   </section>
-  <button class="btnNovoJogo">Novo jogo</button>
+  <button id='start-btn'>Novo jogo</button>
   <script src="script.js"></script>
 </body>
 
