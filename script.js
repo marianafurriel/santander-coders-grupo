@@ -77,6 +77,8 @@ class SimonGame {
       this.round = 1;
       this.sequence = new Sequence();
       this.playRound();
+      const pontuacao = document.querySelector("#seqAcerto");
+      pontuacao.textContent = 0;
     }
   }
 
