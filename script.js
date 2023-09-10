@@ -2,7 +2,15 @@ class Button {
   constructor(color) {
     this.color = color;
     this.element = document.getElementById(color);
+    this.sound = document.getElementById(`${color}-sound`);
+    this.element.addEventListener("click", () => this.playSound());
   }
+
+  playSound() {
+    this.sound.currentTime = 0; // Reinicie o áudio se já estiver em execução
+    this.sound.play();
+  }
+
   //adicionar a classe de acender o botão
   flash() {
     this.element.classList.add(`${this.color}-lit`);
@@ -17,6 +25,8 @@ class Sequence {
     this.sequence = [];
   }
 
+  
+
   //adiciona uma cor aleatória a sequencia
   addToSequence() {
     const colors = ["red", "green", "blue", "yellow"];
@@ -30,6 +40,7 @@ class Sequence {
     const interval = setInterval(() => {
       const button = new Button(this.sequence[i]);
       button.flash();
+      button.playSound();
       i++;
       if (i >= this.sequence.length) {
         clearInterval(interval);
@@ -37,6 +48,8 @@ class Sequence {
     }, 1000);
   }
 }
+
+
 
 class SimonGame {
   constructor() {
@@ -80,6 +93,7 @@ class SimonGame {
       //essa função só faz algo se tiver algum jogo rolando
       const button = new Button(color);
       button.flash();
+      button.playSound();//reproduzir o som dos botões
       this.playerSequence.push(color);
 
       if (this.playerSequence.length === this.sequence.sequence.length) {
