@@ -96,6 +96,17 @@ class SimonGame {
       button.playSound();//reproduzir o som dos botões
       this.playerSequence.push(color);
 
+      if (this.playerSequence[this.playerSequence.length - 1] !== this.sequence.sequence[this.playerSequence.length - 1]) {
+        const maiorPontuacao = document.querySelector("#maiorAcerto");
+          if (this.round - 1 > Number(maiorPontuacao.textContent)) {
+            localStorage.setItem("maiorPontuacao", this.round - 1);
+            maiorPontuacao.textContent = this.round - 1;
+          }
+          // encerra a partida e exibe um alerta para avisar o jogador
+          alert(`Game Over! Your score: ${this.round - 1}`);
+          this.isPlaying = false;
+      }
+
       if (this.playerSequence.length === this.sequence.sequence.length) {
         //compara a sequencia de cliques do usuario com a sequencia de cores da rodada
         if (
