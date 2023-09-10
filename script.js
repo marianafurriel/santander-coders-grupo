@@ -7,7 +7,7 @@ class Button {
   }
 
   playSound() {
-    this.sound.currentTime = 0; // Reinicie o áudio se já estiver em execução
+    this.sound.currentTime = 0; // Reinicia o áudio se já estiver em execução
     this.sound.play();
   }
 
@@ -57,6 +57,7 @@ class SimonGame {
     this.playerSequence = [];
     this.round = 1;
     this.isPlaying = false; //esse atributo vai ser usado para impedir que comece um jogo quando já tiver um acontecendo
+    this.canStartNewGame = true;
 
     //adiciona evento de clique para o botão de novo jogo
     document
@@ -121,17 +122,7 @@ class SimonGame {
           setTimeout(() => {
             this.playRound();
           }, 1000);
-        } else {
-          //ao terminar a partida checa se a pontuação atual é recorde, se for, adiciona no local storage e atualiza no DOM
-          const maiorPontuacao = document.querySelector("#maiorAcerto");
-          if (this.round - 1 > Number(maiorPontuacao.textContent)) {
-            localStorage.setItem("maiorPontuacao", this.round - 1);
-            maiorPontuacao.textContent = this.round - 1;
-          }
-          // encerra a partida e exibe um alerta para avisar o jogador
-          alert(`Game Over! Your score: ${this.round - 1}`);
-          this.isPlaying = false;
-        }
+        } 
       }
     }
   }
