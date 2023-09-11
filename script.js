@@ -1,240 +1,121 @@
-const botoes = [...document.querySelectorAll(".botao")];
-const btnVerde = document.querySelector(".verde");
-const btnVermelho = document.querySelector(".vermelho");
-const btnAzul = document.querySelector(".azul");
-const btnAmarelo = document.querySelector(".amarelo");
-const btnNovoJogo = document.getElementById("#btnovoJogo");
-const modal = document.querySelector("#modal");
-const fade = document.querySelector("#fade");
-const modalOkButton = document.querySelector("#modalOkButton");
-const modalCancelButton = document.querySelector("#modalCancelButton");
-const modal2 = document.querySelector("#modal2");
-const fade2 = document.querySelector("#fade2");
-const modalSimButton = document.querySelector("#modalSimButton");
-const modalNaoButton = document.querySelector("#modalNaoButton");
-const mypopup = document.querySelector("#my-popup");
-const botoesColoridos = document.querySelector("#botoesColoridos");
-const maiorAcerto = document.querySelector("#maiorAcerto");
-
-let sequenciaCor = [];
-let sequenciaClick = [];
-let score = 0;
-let maiorPontuacao = 0;
-let cliques = 0;
-let posicao = 0;
-let intervalo = 5000;
-const cores = [
-  "rgb(255, 0, 0)",
-  "rgb(0,10,255)",
-  "rgb(82,255,0)",
-  "rgb(250,255,0)",
-];
-
-// Abrir e fechar modal do começo do jogo
-const toggleModal = () => {
-  [modal, fade].forEach((el) => el.classList.toggle("hide"));
-};
-
-modalCancelButton.addEventListener("click", function (event) {
-  toggleModal();
-});
-
-modalOkButton.addEventListener("click", function (event) {
-  toggleModal();
-  countDown();
-});
-
-// Abrir e fechar modal do reset do jogo
-const toggleModalReset = () => {
-  [modal2, fade2].forEach((el) => el.classList.toggle("hide"));
-};
-
-modalNaoButton.addEventListener("click", function (event) {
-  toggleModalReset();
-});
-
-modalSimButton.addEventListener("click", function (event) {
-  toggleModalReset();
-  countDown();
-});
-
-// Abrir e fechar Contagem regressiva
-const toggleModalCountdown = () => {
-  botoesColoridos.classList.toggle("hide");
-  mypopup.classList.toggle("hide");
-};
-
-// relaciona as cores e botões com os números da sequencia que será criada
-let botaoCor = (numeroCor) => {
-  if (numeroCor == 1) {
-    let audio = document.getElementById("clip1");
-    audio.play();
-    return btnVermelho;
-  } else if (numeroCor == 2) {
-    let audio = document.getElementById("clip2");
-    audio.play();
-    return btnAzul;
-  } else if (numeroCor == 3) {
-    let audio = document.getElementById("clip3");
-    audio.play();
-    return btnAmarelo;
-  } else if (numeroCor == 4) {
-    let audio = document.getElementById("clip4");
-    audio.play();
-    return btnVerde;
+class Button {
+  constructor(color) {
+    this.color = color;
+    this.element = document.getElementById(color);
   }
-};
-
-// ilumina o botão clicado e chega se foi o botao correto
-let click = (cor) => {
-  sequenciaClick[sequenciaClick.length] = cor;
-  botaoCor(cor).classList.add("highlighted");
-
-  setTimeout(() => {
-    botaoCor(cor).classList.remove("highlighted");
-  }, 250);
-
-  cliques += 1;
-  checarCor(cor);
-};
-
-function checarCor(cor) {
-  if (sequenciaCor[posicao] !== cor) {
-    gameOver();
-  } else if (cliques === sequenciaCor.length) {
-    document.querySelector("#seqAcerto").textContent = score + 1;
-    proximaSequencia();
-  } else {
-    posicao++;
+  //adicionar a classe de acender o botão
+  flash() {
+    this.element.classList.add(`${this.color}-lit`);
+    setTimeout(() => {
+      this.element.classList.remove(`${this.color}-lit`);
+    }, 500);
   }
 }
-//eventos de clique para as cores
-btnVermelho.onclick = () => click(1);
-btnAzul.onclick = () => click(2);
-btnAmarelo.onclick = () => click(3);
-btnVerde.onclick = () => click(4);
 
-//Funcao para desabilitar clique nos botões
-function desabilitarBotoes() {
-  botoesColoridos.style.pointerEvents = "none";
-}
-//Funcao para habilitar clique nos botões
-function habilitarBotoes() {
-  botoesColoridos.style.pointerEvents = "auto";
-}
-
-//Gerar um número aleatório de 1 a  que corresconde as cores
-async function gerarNumeroCor() {
-  desabilitarBotoes();
-  let numeroCor = Math.floor(Math.random() * 4 + 1);
-  sequenciaCor.push(numeroCor);
-
-  highlightElement();
-}
-
-async function highlightElement() {
-  for (item of sequenciaCor) {
-    let elemento = botaoCor(item);
-    highlightColor(elemento);
-    await new Promise((resolve) => setTimeout(resolve, 1200));
+class Sequence {
+  constructor() {
+    this.sequence = [];
   }
-  habilitarBotoes();
+
+  //adiciona uma cor aleatória a sequencia
+  addToSequence() {
+    const colors = ["red", "green", "blue", "yellow"];
+    const randomColor = colors[Math.floor(Math.random() * 4)];
+    this.sequence.push(randomColor);
+  }
+
+  //toca a sequencia com 1 segundo de espera entre cada cor
+  playSequence() {
+    let i = 0;
+    const interval = setInterval(() => {
+      const button = new Button(this.sequence[i]);
+      button.flash();
+      i++;
+      if (i >= this.sequence.length) {
+        clearInterval(interval);
+      }
+    }, 1000);
+  }
 }
 
-// faz o efeito de iluminar o botão quando estiver na sua vez da sequencia
-function highlightColor(elemento) {
-  elemento.classList.add("highlighted");
-  setTimeout(() => {
-    elemento.classList.remove("highlighted");
-  }, 500);
-}
+class SimonGame {
+  constructor() {
+    this.sequence = new Sequence();
+    this.playerSequence = [];
+    this.round = 1;
+    this.isPlaying = false; //esse atributo vai ser usado para impedir que comece um jogo quando já tiver um acontecendo
 
-//Começa o jogo
-function playGame() {
-  sequenciaCor = [];
-  sequenciaClick = [];
-  score = 0;
-  desabilitarBotoes();
-  gerarNumeroCor();
-}
+    //adiciona evento de clique para o botão de novo jogo
+    document
+      .getElementById("start-btn")
+      .addEventListener("click", () => this.startGame());
 
-// Colocar mais um número na sequencia de cores
-let proximaSequencia = async () => {
-  posicao = 0;
-  cliques = 0;
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  sequenciaClick = [];
-  score++;
-  intervalo = intervalo * score;
-  gerarNumeroCor();
-};
+    //adiciona evento de clique para cada botão
+    document.querySelectorAll(".simon-button").forEach((button) => {
+      button.addEventListener("click", () => this.handleButtonClick(button.id));
+    });
+  }
 
-//Contagem regressiva
-async function countDown() {
-  toggleModalCountdown();
-  for (let i = 3; i <= 3 && i >= 0; i--) {
-    if (i !== 0) {
-      mypopup.textContent = i;
-      mypopup.style.color = cores[i];
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+  //inicia a partida
+  startGame() {
+    if (!this.isPlaying) {
+      this.isPlaying = true;
+      this.round = 1;
+      this.sequence = new Sequence();
+      this.playRound();
     }
-    if (i == 0) {
-      mypopup.textContent = "GO";
-      mypopup.style.color = cores[i];
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      toggleModalCountdown();
-      await new Promise((resolve) => setTimeout(resolve, 1200));
-      playGame();
+  }
+
+  //metodo que vai ser chamado para iniciar cada rodada
+  playRound() {
+    this.sequence.addToSequence();
+    setTimeout(() => {
+      this.sequence.playSequence();
+      this.playerSequence = [];
+    }, 1000);
+  }
+
+  handleButtonClick(color) {
+    if (this.isPlaying) {
+      //essa função só faz algo se tiver algum jogo rolando
+      const button = new Button(color);
+      button.flash();
+      this.playerSequence.push(color);
+
+      if (this.playerSequence.length === this.sequence.sequence.length) {
+        //compara a sequencia de cliques do usuario com a sequencia de cores da rodada
+        if (
+          JSON.stringify(this.playerSequence) ===
+          JSON.stringify(this.sequence.sequence)
+        ) {
+          //atualiza no DOM a pontuação atual
+          const pontuacao = document.querySelector("#seqAcerto");
+          pontuacao.textContent = this.round;
+          this.round++;
+          //espera 1 segundo e começa a proxima rodada
+          setTimeout(() => {
+            this.playRound();
+          }, 1000);
+        } else {
+          //ao terminar a partida checa se a pontuação atual é recorde, se for, adiciona no local storage e atualiza no DOM
+          const maiorPontuacao = document.querySelector("#maiorAcerto");
+          if (this.round - 1 > Number(maiorPontuacao.textContent)) {
+            localStorage.setItem("maiorPontuacao", this.round - 1);
+            maiorPontuacao.textContent = this.round - 1;
+          }
+          // encerra a partida e exibe um alerta para avisar o jogador
+          alert(`Game Over! Your score: ${this.round - 1}`);
+          this.isPlaying = false;
+        }
+      }
     }
   }
 }
 
-function gameOver() {
-    document.querySelector("#seqAcertoFim").textContent = score;
-    if (maiorPontuacao < score) {
-        maiorPontuacao = score;
-    }
-    sequenciaCor = [];
-    sequenciaClick = [];
-    score = 0;
-    cliques = 0;
-    toggleModalReset();
-    document.querySelector("#maiorAcerto").textContent = maiorPontuacao;
-    document.querySelector("#seqAcerto").textContent = score;
-    return;
-}
+//atualiza o record ao iniciar a página, se for a primeira vez, seta como 0
+const maiorPontuacaoLocal = localStorage.getItem("maiorPontuacao") || 0;
+const maiorPontuacaoSpan = document.querySelector("#maiorAcerto");
+maiorPontuacaoSpan.textContent = maiorPontuacaoLocal;
 
-// Efeitos dos botões
-botoes.forEach((botao) =>
-  botao.addEventListener("mouseenter", () => {
-    const cor = getComputedStyle(botao).backgroundColor;
-    botao.style.boxShadow = `0px 0px 10px 1px ${cor}`;
-  })
-);
-
-botoes.forEach((botao) =>
-  botao.addEventListener("mouseleave", () => {
-    setTimeout(function () {
-      botao.style.boxShadow = "";
-    }, 100);
-  })
-);
-
-botoes.forEach((botao) =>
-  botao.addEventListener("mousedown", () => {
-    const cor = getComputedStyle(botao).backgroundColor;
-    botao.style.boxShadow = `0px 0px 60px 4px ${cor}`;
-  })
-);
-
-botoes.forEach((botao) =>
-  botao.addEventListener("mouseup", () => {
-    setTimeout(function () {
-      const cor = getComputedStyle(botao).backgroundColor;
-      botao.style.boxShadow = `0px 0px 10px 1px ${cor}`;
-    }, 100);
-  })
-);
-
-// const botaoToggleModal = document.querySelector("#btnNovoJogo")
-// botaoToggleModal.addEventListener('click',toggleModal)
+//inicia o jogo
+const game = new SimonGame();

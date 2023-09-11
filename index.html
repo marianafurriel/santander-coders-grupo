@@ -30,8 +30,8 @@
     <h1>Genius</h1>
   </header>
   <section>
-    <p>Maior sequencia de acertos: <span id="maiorAcerto" style="color: yellow;">0</span></p>
-    <p>Você está em uma sequencia de <span id="seqAcerto" style="color: red;">0</span> acertos</p>
+    <p>Maior sequencia de acertos: <span id="maiorAcerto">0</span></p>
+    <p>Você está em uma sequencia de <span id="seqAcerto">0</span> acertos</p>
   </section>
   <div id="fade" class="hide"></div>
     <div id="modal" class="hide">
@@ -55,15 +55,13 @@
     </div>
   <section id="botoesColoridos">
     <div class="tabuleiro">
-      <div id="botaoVermelho" class="botao vermelho"></div>
-      <div id="botaoAzul" class="botao azul"></div>
-      <div id="botaoVerde" class="botao verde"></div>
-      <div id="botaoAmarelo" class="botao amarelo"></div>
+      <div id="red" class="simon-button"></div>
+      <div id="blue" class="simon-button"></div>
+      <div id="green" class="simon-button"></div>
+      <div id="yellow" class="simon-button"></div>
     </div>
   </section>
-  <button id="btnovoJogo">Novo jogo</button>
-  <!-- <button id="btnovoJogo" onclick="toggleModal()">Novo jogo</button> -->
-  <!-- <script src="./main.js"></script> -->
-  <script src="./scriptEmClasses.js"></script>
+  <button id='start-btn'>Novo jogo</button>
+  <script src="script.js"></script>
 </body>
 </html>
