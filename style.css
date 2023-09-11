@@ -6,11 +6,20 @@
   box-sizing: border-box;
 }
 
+:root {
+  --vermelho: rgb(255, 0, 0);
+  --azul: rgb(0,10,255);
+  --verde: rgb(82,255,0);
+  --amarelo: rgb(250,255,0);
+  --branco: rgb(231,231,231);
+  --backgroundColor: rgb(0, 0, 0);
+}
+
 body {
   height: 100vh;
   padding: 1.5rem 0rem 5rem;
-  background-color: #000;
-  color: #e7e7e7;
+  background-color: var(--backgroundColor);
+  color: var(--branco);
   font-size: 62.5%;
   font-family: Roboto;
   display: flex;
@@ -43,19 +52,13 @@ p {
 
 #red {
   grid-area: 1 / 1 / 2 / 2;
-  background-color: rgb(255, 0, 0);
-}
-/* #red:hover {
-  box-shadow: 0px 0px 10px 4px #ff0000;
-} */
-#red:active,
-.red-lit {
-  box-shadow: 0px 0px 60px 4px #ff0000;
+  background-color: var(--vermelho);
+  /* box-shadow: 0px 0px 60px 4px #ff0000; */
 }
 
 #blue {
   grid-area: 1 / 2 / 2 / 3;
-  background-color: #000aff;
+  background-color: var(--azul);
   /* box-shadow: 0px 0px 60px 4px #000aff; */
 }
 /* #blue:hover {
@@ -68,19 +71,13 @@ p {
 
 #green {
   grid-area: 2 / 1 / 3 / 2;
-  background-color: #52ff00;
-}
-/* #green:hover {
-  box-shadow: 0px 0px 10px 4px #52ff00;
-} */
-#green:active,
-.green-lit {
-  box-shadow: 0px 0px 60px 4px #52ff00;
+  background-color: var(--verde);
+  /* box-shadow: 0px 0px 60px 4px #52ff00; */
 }
 
 #yellow {
   grid-area: 2 / 2 / 3 / 3;
-  background-color: #faff00;
+  background-color: var(--amarelo);
   /* box-shadow: 0px 0px 60px 4px #faff00; */
 }
 /* #yellow:hover {
@@ -102,26 +99,105 @@ p {
 #start-btn {
   cursor: pointer;
   background-color: transparent;
-  border: 1px solid #e7e7e7;
-  color: #e7e7e7;
+  border: 1px solid var(--branco);
+  color: var(--branco);
   border-radius: 2.5rem;
   padding: 0.7rem 1.5rem;
+  margin-top: 1.5rem;
   font-family: Roboto;
   font-size: 1rem;
   transition: background-color 0.7s linear, color 0.7s linear,
     letter-spacing 0.7s linear;
 }
 
-#start-btn:hover {
-  background-color: #e7e7e7;
+button:hover {
+  background-color: var(--branco);
   color: #000;
   letter-spacing: 0.2rem;
   transition: background-color 0.7s linear, color 0.7s linear,
     letter-spacing 0.7s linear;
 }
 
-.lit {
-  /* background-color: white !important; */
-  /* border: 5px solid rgb(255, 255, 255); */
-  box-shadow: 0px 0px 60px 4px;
+.highlighted {
+  background-color: var(--branco);
+}
+
+#open-modal {
+  background-color: var(--azul);
+}
+
+#fade, #fade2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 5;
+}
+
+#modal, #modal2 {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  max-width: 90%;
+  background-color: var(--branco);
+  padding: 1.2rem;
+  border-radius: 0.5rem;
+  z-index: 10;
+}
+
+#fade, #modal, #fade2, #modal2 {
+  transition: 0.5s;
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-body p, .modal-body2 p {
+  margin-bottom: 1rem;
+  font-size: 3rem;
+  color: #000000;
+}
+
+#modalOkButton, #modalSimButton {
+  margin-right: 1rem;
+  background-color: var(--verde);
+  color: #000000;
+  font-weight: 700;
+  border: 2px solid #000000;
+}
+
+#modalCancelButton, #modalNaoButton {
+  background-color: var(--vermelho);
+  color: #000000;
+  font-weight: 700;
+  border: 2px solid #000000;
+}
+
+#modal.hide, #fade.hide, #modal2.hide, #fade2.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#modal.hide, #modal2.hide {
+  top: 0;
+}
+
+#my-popup {
+  background-color: var(--backgroundColor);
+  width: 10rem;
+  border-radius: 50%;
+  padding: 4rem;
+  font-size: 10rem;
+}
+
+
+#my-popup.hide {
+  display: none;
+}
+
+#botoesColoridos.hide {
+  display: none;
 }

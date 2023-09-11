@@ -5,18 +5,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="style.css">
-  <title>Genius</title>
-  <audio id="red-sound">
+  <title>Genius Game</title>
+
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="shortcut icon" href="./img/shortcut_icon.jpg" type="">
+ 
+
+  <audio id="clip1">
   	<source src="https://s3.amazonaws.com/freecodecamp/simonSound1.mp3"></source>
   </audio>
-  <audio id="blue-sound">
+  <audio id="clip2">
   	<source src="https://s3.amazonaws.com/freecodecamp/simonSound2.mp3"></source>
   </audio>
-  <audio id="green-sound">
+  <audio id="clip3">
   	<source src="https://s3.amazonaws.com/freecodecamp/simonSound3.mp3"></source>
   </audio>
-  <audio id="yellow-sound">
+  <audio id="clip4">
   	<source src="https://s3.amazonaws.com/freecodecamp/simonSound4.mp3"></source>
   </audio>
 </head>
@@ -26,19 +30,38 @@
     <h1>Genius</h1>
   </header>
   <section>
-    <p>Maior sequencia de acertos: <span id="maiorAcerto">0</span></p>
-    <p>Você está em uma sequencia de <span id="seqAcerto">0</span> acertos</p>
+    <p>Maior sequencia de acertos: <span id="maiorAcerto" style="color: yellow;">0</span></p>
+    <p>Você está em uma sequencia de <span id="seqAcerto" style="color: red;">0</span> acertos</p>
   </section>
-  <section>
+  <div id="fade" class="hide"></div>
+    <div id="modal" class="hide">
+      <div class="modal-body">
+        <p>Bora jogar?</p>
+        <button id="modalOkButton">Ok</button>
+        <button id="modalCancelButton">Cancelar</button>
+      </div>
+    </div>
+    <div id="fade2" class="hide"></div>
+    <div id="modal2" class="hide">
+      <div class="modal-body2">
+        <p>Você acertou <span id="seqAcertoFim" style="color: red;"></span></p>
+        <p>Deseja jogar novamente?</p>
+        <button id="modalSimButton">Sim</button>
+        <button id="modalNaoButton">Não</button>
+      </div>
+    </div>
+    <div id="my-popup" class="hide">
+      <span id=”nCountdown”></span>
+    </div>
+  <section id="botoesColoridos">
     <div class="tabuleiro">
-      <div id="red" class="simon-button"></div>
-      <div id="blue" class="simon-button"></div>
-      <div id="green" class="simon-button"></div>
-      <div id="yellow" class="simon-button"></div>
+      <div id="botaoVermelho" class="botao vermelho"></div>
+      <div id="botaoAzul" class="botao azul"></div>
+      <div id="botaoVerde" class="botao verde"></div>
+      <div id="botaoAmarelo" class="botao amarelo"></div>
     </div>
   </section>
-  <button id='start-btn'>Novo jogo</button>
-  <script src="script.js"></script>
+  <button id="btnovoJogo" onclick="toggleModal()">Novo jogo</button>
+  <script src="./script.js"></script>
 </body>
-
 </html>
